@@ -4,8 +4,8 @@ export default function html([first, ...strings], ...values) {
   return values.reduce((acc, curr) => {
     return acc.concat(curr, strings.shift());
   }, [first])
-  .filter(x => x && x!== true || x === 0)
-  .join('');
+    .filter(x => x && x !== true || x === 0)
+    .join('');
 }
 
 export function createStore(render) {
@@ -24,11 +24,14 @@ export function createStore(render) {
       roots.set(root, component);
       render();
     },
-    connect(selector = state => state){
-      return component => (props, ...args) => 
-        component(Object.assign({}, props, selector(state), ...args));
+    connect(selector = state => state) {
+      return component => {
+        return (props, ...args) => {
+          return component(Object.assign({}, props, selector(state), ...args));
+        }
+      }
     },
-    dispatch(action, ...args){
+    dispatch(action, ...args) {
       state = reducer(state, action, args);
       render();
     }
